@@ -1,3 +1,4 @@
+import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import { buttonVariants } from "@/components/ui/Button";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -80,19 +81,18 @@ const Layout = async ({
                   <div className="text-gray-900">{memberCount}</div>
                 </dd>
               </div>
-              {subreddit.creatorId === session?.user?.id ? (
+              {subreddit?.creatorId === session?.user?.id ? (
                 <div className="flex justify-between gap-x-4 py-3">
                   <dt className="text-gray-500">You created this community</dt>
                 </div>
               ) : null}
 
               {subreddit.creatorId !== session?.user?.id ? (
-                // <SubscribeLeaveToggle
-                //   isSubscribed={isSubscribed}
-                //   subredditId={subreddit.id}
-                //   subredditName={subreddit.name}
-                // />
-                <p>test</p>
+                <SubscribeLeaveToggle
+                  isSubscribed={isSubscribed}
+                  subredditId={subreddit.id}
+                  subredditName={subreddit.name}
+                />
               ) : null}
               <Link
                 className={buttonVariants({
