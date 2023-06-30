@@ -1,4 +1,5 @@
 import MiniCreatePost from "@/components/MiniCreatePost";
+import PostFeed from "@/components/PostFeed";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -44,6 +45,7 @@ const Page = async ({ params }: PageProps) => {
       <MiniCreatePost session={session} />
 
       {/* TOOD: show post in users feed */}
+      <PostFeed />
     </>
   );
 };
