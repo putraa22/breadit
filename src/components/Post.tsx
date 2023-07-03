@@ -67,7 +67,6 @@ const Post: FC<PostProps> = ({
               <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
             ) : null}
           </div>
-          P
         </div>
       </div>
 
