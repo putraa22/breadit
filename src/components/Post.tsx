@@ -34,7 +34,7 @@ const Post: FC<PostProps> = ({
         <PostVoteClient
           postId={post.id}
           initialVote={curreentVote?.type}
-          initialVoteAmt={votesAmt}
+          initialVotesAmt={votesAmt}
         />
 
         <div className="w-0 flex-1 ">
