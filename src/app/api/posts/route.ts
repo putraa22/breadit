@@ -19,9 +19,7 @@ export async function GET(req: Request) {
       },
     });
 
-    followedCommunitiesIds = followedCommunities.map(
-      ({ subreddit }) => subreddit.id
-    );
+    followedCommunitiesIds = followedCommunities.map((sub) => sub.subreddit.id);
   }
 
   try {
@@ -57,7 +55,7 @@ export async function GET(req: Request) {
 
     const posts = await db.post.findMany({
       take: parseInt(limit),
-      skip: (parseInt(page) - 1) * parseInt(limit),
+      skip: (parseInt(page) - 1) * parseInt(limit), // skip should start from 0 for page 1
       orderBy: {
         createdAt: "desc",
       },

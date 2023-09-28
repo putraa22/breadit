@@ -1,41 +1,43 @@
 "use client";
+
 import { useCustomToasts } from "@/hooks/use-custom-toast";
+import { PostVoteRequest } from "@/lib/validators/vote";
 import { usePrevious } from "@mantine/hooks";
 import { VoteType } from "@prisma/client";
-import { FC, useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { toast } from "../../hooks/use-toast";
 import { Button } from "../ui/Button";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import { PostVoteRequest } from "@/lib/validators/vote";
-import { toast } from "@/hooks/use-toast";
 
 interface PostVoteClientProps {
   postId: string;
-  initialVoteAmt: number;
+  initialVotesAmt: number;
   initialVote?: VoteType | null;
 }
 
-const PostVoteClient: FC<PostVoteClientProps> = ({
+const PostVoteClient = ({
   postId,
-  initialVoteAmt,
+  initialVotesAmt,
   initialVote,
-}) => {
+}: PostVoteClientProps) => {
   const { loginToast } = useCustomToasts();
-  const [votesAmt, setVotesAmt] = useState<number>(initialVoteAmt);
+  const [votesAmt, setVotesAmt] = useState<number>(initialVotesAmt);
   const [currentVote, setCurrentVote] = useState(initialVote);
-  const prevVotes = usePrevious(currentVote);
+  const prevVote = usePrevious(currentVote);
 
+  // ensure sync with server
   useEffect(() => {
     setCurrentVote(initialVote);
   }, [initialVote]);
 
   const { mutate: vote } = useMutation({
-    mutationFn: async (voteType: VoteType) => {
+    mutationFn: async (type: VoteType) => {
       const payload: PostVoteRequest = {
-        voteType,
-        postId,
+        voteType: type,
+        postId: postId,
       };
 
       await axios.patch("/api/subreddit/post/vote", payload);
@@ -45,7 +47,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
       else setVotesAmt((prev) => prev + 1);
 
       // reset current vote
-      setCurrentVote(prevVotes);
+      setCurrentVote(prevVote);
 
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
@@ -104,7 +106,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
           "text-emerald-500": currentVote === "DOWN",
         })}
         variant="ghost"
-        aria-label="upvote"
+        aria-label="downvote"
       >
         <ArrowBigDown
           className={cn("h-5 w-5 text-zinc-700", {
