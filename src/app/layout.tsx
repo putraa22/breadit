@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/Toaster";
 import Providers from "@/components/Providers";
+import ToFeedButton from "@/components/ToFeedButton";
 
 export const metadata = {
   title: "Breadit",
@@ -32,6 +33,9 @@ export default function RootLayout({
           {authModal}
 
           <div className="container max-w-7xl mx-auto h-full pt-12 ">
+            {/* button back */}
+            <ToFeedButton />
+
             {children}
           </div>
 
